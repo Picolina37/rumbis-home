@@ -167,7 +167,8 @@ RUMBIS · HOME COMPLETO · v2.6
       url: "/productos/",
       alt: "Elegí tranquilo. Envíos a todo el país, 6 cuotas sin interés y primer cambio gratis."
     }
-
+   ]
+     },
     /* --- TIRA DE SELLOS ----------------------------------------- */
     sellos: [
       { ico: "envio",  titulo: "Envío a todo el país", sub: "Con Correo Argentino" },
