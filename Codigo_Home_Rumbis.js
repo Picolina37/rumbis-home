@@ -1133,8 +1133,8 @@ RUMBIS · HOME COMPLETO · v2.6
     "#rh-banner .bn-track::-webkit-scrollbar{display:none}",
     "#rh-banner .bn-s{flex:0 0 100%;scroll-snap-align:start;scroll-snap-stop:always}",
     "#rh-banner .bn-s a{display:block}",
-    "#rh-banner .bn-img{display:block;width:100%;height:auto;aspect-ratio:auto 3/4;background:var(--rb-hueso);-webkit-user-drag:none}",
-    "@media(min-width:700px){#rh-banner .bn-img{aspect-ratio:auto 16/9}}",
+    "#rh-banner .bn-s,#rh-banner .bn-s a,#rh-banner picture{display:block;width:100%;height:auto!important;max-height:none!important;aspect-ratio:auto!important}",
+    "#rh-banner .bn-img{display:block!important;position:static!important;width:100%!important;height:auto!important;max-width:100%!important;max-height:none!important;aspect-ratio:auto!important;object-fit:contain!important;background:var(--rb-hueso);-webkit-user-drag:none}",
     "#rh-banner .bn-dots{display:flex;justify-content:center;align-items:center;gap:6px;padding:14px 0 2px}",
     "#rh-banner .rh-dot:focus-visible{outline:2px solid var(--rb-vino);outline-offset:3px}",
 
