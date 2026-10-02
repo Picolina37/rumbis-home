@@ -1125,18 +1125,17 @@
     "#rh-dr-bg.on{opacity:1;visibility:visible}",
     "@media(min-width:600px){#rh-drawer{right:auto;width:420px}#rh-drawer.on{box-shadow:24px 0 60px rgba(110,49,60,.2)}}",
 
-    /* banners: la foto entera, sin recortar */
-    "#rh-banner{position:relative;background:#fff}",
-    "#rh-banner .bn-track{display:flex;align-items:flex-start;overflow-x:auto;scroll-snap-type:x mandatory;",
-    "-ms-overflow-style:none;scrollbar-width:none;overscroll-behavior-x:contain}",
-    "#rh-banner .bn-track::-webkit-scrollbar{display:none}",
-    "#rh-banner .bn-s{flex:0 0 100%;scroll-snap-align:start;scroll-snap-stop:always}",
-    "#rh-banner .bn-s a{display:block}",
-    "#rh-banner picture{display:block;width:100%}",
-     "#rh-banner .bn-img{display:block;width:100%!important;height:auto!important;aspect-ratio:3/4;max-height:85vh;object-fit:cover;max-width:100%;background:var(--rb-hueso);-webkit-user-drag:none}",
-"@media(min-width:700px){#rh-banner .bn-img{aspect-ratio:16/9;max-height:80vh}}",
-    "#rh-banner .bn-dots{display:flex;justify-content:center;align-items:center;gap:6px;padding:14px 0 2px}",
-    "#rh-banner .rh-dot:focus-visible{outline:2px solid var(--rb-vino);outline-offset:3px}",
+   
+    /* banners: responsive, imagen completa */
+   "#rh-banner{position:relative;width:100%;max-width:100%;overflow:hidden;background:#fff}",
+   "#rh-banner .bn-track{display:flex;width:100%;max-width:100%;min-width:0;align-items:flex-start;overflow-x:auto;scroll-snap-type:x mandatory;-ms-overflow-style:none;scrollbar-width:none;overscroll-behavior-x:contain}",
+   "#rh-banner .bn-track::-webkit-scrollbar{display:none}",
+   "#rh-banner .bn-s{flex:0 0 100%;width:100%;min-width:0;max-width:100%;overflow:hidden;scroll-snap-align:start;scroll-snap-stop:always}",
+   "#rh-banner .bn-s a{display:block;width:100%;max-width:100%;overflow:hidden}",
+   "#rh-banner picture{display:block;width:100%;max-width:100%;overflow:hidden}",
+   "#rh-banner .bn-img{display:block;width:100%;max-width:100%;height:auto;margin:0;padding:0;background:var(--rb-hueso);-webkit-user-drag:none}",
+   "#rh-banner .bn-dots{display:flex;justify-content:center;align-items:center;gap:6px;padding:14px 0 2px}",
+   "#rh-banner .rh-dot:focus-visible{outline:2px solid var(--rb-vino);outline-offset:3px}",
 
     /* categorias: carrusel tipo Puck, foto y nombre abajo */
     "#rh-categorias .rh-hd{margin-bottom:26px}",
