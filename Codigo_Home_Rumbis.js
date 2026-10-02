@@ -1,5 +1,4 @@
-/* ================================================================
-   RUMBIS · HOME COMPLETO · v2.6
+RUMBIS · HOME COMPLETO · v2.6
    ----------------------------------------------------------------
    v2.6: correcciones de la planilla "Diseño HOME". Arriba, al estilo
    Puck: menú hamburguesa a la izquierda y RUMBIS al centro, y el hero
@@ -156,13 +155,13 @@
       titulo: "Lo que tu perro necesita de verdad",   /* título de la página para Google (no se ve) */
       segundos: 6,
       slides: [
-        { imgCompu: "https://i.ibb.co/9mt6bZVS/1web.jpg",
-          imgCelu: "https://i.ibb.co/qFsW4DMK/1cel.jpg",
-          url: "/paseos-y-viajes/arneses/",
-          alt: "Lo que tu perro necesita de verdad. Paseo, juego, cuidado y snacks seleccionado por educadores caninos, pensando en su bienestar." },
-        { imgCompu: "https://i.ibb.co/bM0yZhfX/2web.jpg",
-          imgCelu: "https://i.ibb.co/VkjGBdt/2cel.jpg",
+        { imgCompu: "https://i.ibb.co/20r463pm/Bernese-Mountain-Dog-commercial-20260929154759-1.jpg",
+          imgCelu: "https://i.ibb.co/mrDFM6G2/Bernese-Mountain-Dog-commercial-20260929154802-1.jpg",
           url: "/productos/",
+          alt: "Lo que tu perro necesita de verdad. Paseo, juego, cuidado, snacks y mucho más, todo seleccionado por educadores caninos, pensando en su bienestar." },
+        { imgCompu: "https://i.ibb.co/cBGpfNx/Woman-holding-dog-in-studio-20260929154808-1.jpg",
+          imgCelu: "https://i.ibb.co/8LXRTpbL/Woman-holding-dog-20260929154812-1.jpg",
+          url: "/paseos-y-viajes/arneses/",
           alt: "6 cuotas sin interés. Envío a todo el país. Primer cambio de talle gratis." }
       ]
     },
@@ -1125,17 +1124,17 @@
     "#rh-dr-bg.on{opacity:1;visibility:visible}",
     "@media(min-width:600px){#rh-drawer{right:auto;width:420px}#rh-drawer.on{box-shadow:24px 0 60px rgba(110,49,60,.2)}}",
 
-   
-    /* banners: responsive, imagen completa */
-   "#rh-banner{position:relative;width:100%;max-width:100%;overflow:hidden;background:#fff}",
-   "#rh-banner .bn-track{display:flex;width:100%;max-width:100%;min-width:0;align-items:flex-start;overflow-x:auto;scroll-snap-type:x mandatory;-ms-overflow-style:none;scrollbar-width:none;overscroll-behavior-x:contain}",
-   "#rh-banner .bn-track::-webkit-scrollbar{display:none}",
-   "#rh-banner .bn-s{flex:0 0 100%;width:100%;min-width:0;max-width:100%;overflow:hidden;scroll-snap-align:start;scroll-snap-stop:always}",
-   "#rh-banner .bn-s a{display:block;width:100%;max-width:100%;overflow:hidden}",
-   "#rh-banner picture{display:block;width:100%;max-width:100%;overflow:hidden}",
-   "#rh-banner .bn-img{display:block;width:100%;max-width:100%;height:auto;margin:0;padding:0;background:var(--rb-hueso);-webkit-user-drag:none}",
-   "#rh-banner .bn-dots{display:flex;justify-content:center;align-items:center;gap:6px;padding:14px 0 2px}",
-   "#rh-banner .rh-dot:focus-visible{outline:2px solid var(--rb-vino);outline-offset:3px}",
+    /* banners: la foto entera, sin recortar */
+    "#rh-banner{position:relative;background:#fff}",
+    "#rh-banner .bn-track{display:flex;align-items:flex-start;overflow-x:auto;scroll-snap-type:x mandatory;",
+    "-ms-overflow-style:none;scrollbar-width:none;overscroll-behavior-x:contain}",
+    "#rh-banner .bn-track::-webkit-scrollbar{display:none}",
+    "#rh-banner .bn-s{flex:0 0 100%;scroll-snap-align:start;scroll-snap-stop:always}",
+    "#rh-banner .bn-s a{display:block}",
+    "#rh-banner .bn-img{display:block;width:100%;height:auto;aspect-ratio:auto 3/4;background:var(--rb-hueso);-webkit-user-drag:none}",
+    "@media(min-width:700px){#rh-banner .bn-img{aspect-ratio:auto 16/9}}",
+    "#rh-banner .bn-dots{display:flex;justify-content:center;align-items:center;gap:6px;padding:14px 0 2px}",
+    "#rh-banner .rh-dot:focus-visible{outline:2px solid var(--rb-vino);outline-offset:3px}",
 
     /* categorias: carrusel tipo Puck, foto y nombre abajo */
     "#rh-categorias .rh-hd{margin-bottom:26px}",
