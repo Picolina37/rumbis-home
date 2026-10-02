@@ -1133,7 +1133,8 @@
     "#rh-banner .bn-s{flex:0 0 100%;scroll-snap-align:start;scroll-snap-stop:always}",
     "#rh-banner .bn-s a{display:block}",
     "#rh-banner picture{display:block;width:100%}",
-"    #rh-banner .bn-img{display:block;width:100%;height:auto;max-width:100%;background:var(--rb-hueso);-webkit-user-drag:none}",
+     "#rh-banner .bn-img{display:block;width:100%!important;height:auto!important;aspect-ratio:3/4;max-height:85vh;object-fit:cover;max-width:100%;background:var(--rb-hueso);-webkit-user-drag:none}",
+"@media(min-width:700px){#rh-banner .bn-img{aspect-ratio:16/9;max-height:80vh}}",
     "#rh-banner .bn-dots{display:flex;justify-content:center;align-items:center;gap:6px;padding:14px 0 2px}",
     "#rh-banner .rh-dot:focus-visible{outline:2px solid var(--rb-vino);outline-offset:3px}",
 
