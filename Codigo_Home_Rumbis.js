@@ -1127,16 +1127,16 @@ RUMBIS · HOME COMPLETO · v2.6
     "@media(min-width:600px){#rh-drawer{right:auto;width:420px}#rh-drawer.on{box-shadow:24px 0 60px rgba(110,49,60,.2)}}",
 
     /* banners: la foto entera, sin recortar */
-    "#rh-banner{position:relative;background:#fff}",
-    "#rh-banner .bn-track{display:flex;align-items:flex-start;overflow-x:auto;scroll-snap-type:x mandatory;",
-    "-ms-overflow-style:none;scrollbar-width:none;overscroll-behavior-x:contain}",
-    "#rh-banner .bn-track::-webkit-scrollbar{display:none}",
-    "#rh-banner .bn-s{flex:0 0 100%;scroll-snap-align:start;scroll-snap-stop:always}",
-    "#rh-banner .bn-s a{display:block}",
-    "#rh-banner .bn-s,#rh-banner .bn-s a,#rh-banner picture{display:block;width:100%;height:auto!important;max-height:none!important;aspect-ratio:auto!important}",
-    "#rh-banner .bn-img{display:block!important;position:static!important;width:100%!important;height:auto!important;max-width:100%!important;max-height:none!important;aspect-ratio:auto!important;object-fit:contain!important;background:var(--rb-hueso);-webkit-user-drag:none}",
-    "#rh-banner .bn-dots{display:flex;justify-content:center;align-items:center;gap:6px;padding:14px 0 2px}",
-    "#rh-banner .rh-dot:focus-visible{outline:2px solid var(--rb-vino);outline-offset:3px}",
+    /* banners: 3:4 celular / 16:9 compu, siempre completos */
+"#rh-banner{position:relative;background:#fff;width:100%}",
+"#rh-banner .bn-track{display:flex;align-items:flex-start;width:100%;overflow-x:auto;overflow-y:hidden;scroll-snap-type:x mandatory;-ms-overflow-style:none;scrollbar-width:none;overscroll-behavior-x:contain}",
+"#rh-banner .bn-track::-webkit-scrollbar{display:none}",
+"#rh-banner .bn-s{position:relative;flex:0 0 100%!important;width:100%!important;height:auto!important;aspect-ratio:3/4!important;scroll-snap-align:start;scroll-snap-stop:always;overflow:hidden}",
+"#rh-banner .bn-s a,#rh-banner .bn-s picture{display:block!important;width:100%!important;height:100%!important}",
+"#rh-banner .bn-img{display:block!important;position:static!important;width:100%!important;height:100%!important;max-width:none!important;max-height:none!important;object-fit:contain!important;object-position:center!important}",
+"@media(min-width:700px){#rh-banner .bn-s{aspect-ratio:16/9!important}}",
+"#rh-banner .bn-dots{display:flex;justify-content:center;align-items:center;gap:6px;padding:14px 0 2px}",
+"#rh-banner .rh-dot:focus-visible{outline:2px solid var(--rb-vino);outline-offset:3px}",
 
     /* categorias: carrusel tipo Puck, foto y nombre abajo */
     "#rh-categorias .rh-hd{margin-bottom:26px}",
