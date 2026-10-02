@@ -151,20 +151,22 @@ RUMBIS · HOME COMPLETO · v2.6
        · alt      = lo que dice la foto. Lo leen Google y los lectores
                     de pantalla: si cambiás la foto, cambiá también esto.
        "segundos" = cada cuánto pasan solos (0 = no pasan solos). */
-    banner: {
-      titulo: "Lo que tu perro necesita de verdad",   /* título de la página para Google (no se ve) */
-      segundos: 6,
-      slides: [
-        { imgCompu: "https://i.ibb.co/20r463pm/Bernese-Mountain-Dog-commercial-20260929154759-1.jpg",
-          imgCelu: "https://i.ibb.co/mrDFM6G2/Bernese-Mountain-Dog-commercial-20260929154802-1.jpg",
-          url: "/productos/",
-          alt: "Lo que tu perro necesita de verdad. Paseo, juego, cuidado, snacks y mucho más, todo seleccionado por educadores caninos, pensando en su bienestar." },
-        { imgCompu: "https://i.ibb.co/cBGpfNx/Woman-holding-dog-in-studio-20260929154808-1.jpg",
-          imgCelu: "https://i.ibb.co/8LXRTpbL/Woman-holding-dog-20260929154812-1.jpg",
-          url: "/paseos-y-viajes/arneses/",
-          alt: "6 cuotas sin interés. Envío a todo el país. Primer cambio de talle gratis." }
-      ]
+   banner: {
+  titulo: "Lo que tu perro necesita de verdad",
+  segundos: 6,
+  slides: [
+    {
+      imgCompu: "https://res.cloudinary.com/ddzpn3skx/image/upload/f_auto/q_auto/1.jpg",
+      imgCelu: "https://res.cloudinary.com/ddzpn3skx/image/upload/f_auto/q_auto/cel1.jpg",
+      url: "/productos/",
+      alt: "Lo que tu perro necesita de verdad. Paseo, juego, cuidado y snacks seleccionados por educadores caninos pensando en su bienestar."
     },
+    {
+      imgCompu: "https://res.cloudinary.com/ddzpn3skx/image/upload/f_auto/q_auto/2.jpg",
+      imgCelu: "https://res.cloudinary.com/ddzpn3skx/image/upload/f_auto/q_auto/2cel.jpg",
+      url: "/productos/",
+      alt: "Elegí tranquilo. Envíos a todo el país, 6 cuotas sin interés y primer cambio gratis."
+    }
 
     /* --- TIRA DE SELLOS ----------------------------------------- */
     sellos: [
