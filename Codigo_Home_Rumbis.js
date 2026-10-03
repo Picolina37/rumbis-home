@@ -1,4 +1,5 @@
-RUMBIS · HOME COMPLETO · v2.6
+/* ================================================================
+   RUMBIS · HOME COMPLETO · v2.6
    ----------------------------------------------------------------
    v2.6: correcciones de la planilla "Diseño HOME". Arriba, al estilo
    Puck: menú hamburguesa a la izquierda y RUMBIS al centro, y el hero
@@ -93,7 +94,7 @@ RUMBIS · HOME COMPLETO · v2.6
       horario: "Lunes a viernes de 9 a 19 hs",
       instagram: "https://instagram.com/rumbis.ar",
       facebook: "https://www.facebook.com/profile.php?id=61575780800573",
-      email: "contacto.rumbis@gmail.com",
+      email: "hola@rumbis.com.ar",
       cuit: "27313274034"
     },
 
@@ -151,24 +152,21 @@ RUMBIS · HOME COMPLETO · v2.6
        · alt      = lo que dice la foto. Lo leen Google y los lectores
                     de pantalla: si cambiás la foto, cambiá también esto.
        "segundos" = cada cuánto pasan solos (0 = no pasan solos). */
-   banner: {
-  titulo: "Lo que tu perro necesita de verdad",
-  segundos: 6,
-  slides: [
-    {
-      imgCompu: "https://res.cloudinary.com/ddzpn3skx/image/upload/f_auto/q_auto/1.jpg",
-      imgCelu: "https://res.cloudinary.com/ddzpn3skx/image/upload/f_auto/q_auto/cel1.jpg",
-      url: "/productos/",
-      alt: "Lo que tu perro necesita de verdad. Paseo, juego, cuidado y snacks seleccionados por educadores caninos pensando en su bienestar."
+    banner: {
+      titulo: "Lo que tu perro necesita de verdad",   /* título de la página para Google (no se ve) */
+      segundos: 6,
+      slides: [
+        { imgCompu: "https://i.ibb.co/9mt6bZVS/1web.jpg",
+          imgCelu: "https://i.ibb.co/qFsW4DMK/1cel.jpg",
+          url: "/paseos-y-viajes/arneses/",
+          alt: "Lo que tu perro necesita de verdad. Paseo, juego, cuidado y snacks seleccionado por educadores caninos, pensando en su bienestar." },
+        { imgCompu: "https://i.ibb.co/bM0yZhfX/2web.jpg",
+          imgCelu: "https://i.ibb.co/VkjGBdt/2cel.jpg",
+          url: "/productos/",
+          alt: "6 cuotas sin interés. Envío a todo el país. Primer cambio de talle gratis." }
+      ]
     },
-    {
-      imgCompu: "https://res.cloudinary.com/ddzpn3skx/image/upload/f_auto/q_auto/2.jpg",
-      imgCelu: "https://res.cloudinary.com/ddzpn3skx/image/upload/f_auto/q_auto/2cel.jpg",
-      url: "/productos/",
-      alt: "Elegí tranquilo. Envíos a todo el país, 6 cuotas sin interés y primer cambio gratis."
-    }
-   ]
-     },
+
     /* --- TIRA DE SELLOS ----------------------------------------- */
     sellos: [
       { ico: "envio",  titulo: "Envío a todo el país", sub: "Con Correo Argentino" },
@@ -1128,16 +1126,16 @@ RUMBIS · HOME COMPLETO · v2.6
     "@media(min-width:600px){#rh-drawer{right:auto;width:420px}#rh-drawer.on{box-shadow:24px 0 60px rgba(110,49,60,.2)}}",
 
     /* banners: la foto entera, sin recortar */
-    /* banners: 3:4 celular / 16:9 compu, siempre completos */
-"#rh-banner{position:relative;background:#fff;width:100%}",
-"#rh-banner .bn-track{display:flex;align-items:flex-start;width:100%;overflow-x:auto;overflow-y:hidden;scroll-snap-type:x mandatory;-ms-overflow-style:none;scrollbar-width:none;overscroll-behavior-x:contain}",
-"#rh-banner .bn-track::-webkit-scrollbar{display:none}",
-"#rh-banner .bn-s{position:relative;flex:0 0 100%!important;width:100%!important;height:auto!important;aspect-ratio:3/4!important;scroll-snap-align:start;scroll-snap-stop:always;overflow:hidden}",
-"#rh-banner .bn-s a,#rh-banner .bn-s picture{display:block!important;width:100%!important;height:100%!important}",
-"#rh-banner .bn-img{display:block!important;position:static!important;width:100%!important;height:100%!important;max-width:none!important;max-height:none!important;object-fit:contain!important;object-position:center!important}",
-"@media(min-width:700px){#rh-banner .bn-s{aspect-ratio:16/9!important}}",
-"#rh-banner .bn-dots{display:flex;justify-content:center;align-items:center;gap:6px;padding:14px 0 2px}",
-"#rh-banner .rh-dot:focus-visible{outline:2px solid var(--rb-vino);outline-offset:3px}",
+    "#rh-banner{position:relative;background:#fff}",
+    "#rh-banner .bn-track{display:flex;align-items:flex-start;overflow-x:auto;scroll-snap-type:x mandatory;",
+    "-ms-overflow-style:none;scrollbar-width:none;overscroll-behavior-x:contain}",
+    "#rh-banner .bn-track::-webkit-scrollbar{display:none}",
+    "#rh-banner .bn-s{flex:0 0 100%;scroll-snap-align:start;scroll-snap-stop:always}",
+    "#rh-banner .bn-s a{display:block}",
+    "#rh-banner .bn-img{display:block;width:100%;height:auto;aspect-ratio:auto 3/4;background:var(--rb-hueso);-webkit-user-drag:none}",
+    "@media(min-width:700px){#rh-banner .bn-img{aspect-ratio:auto 16/9}}",
+    "#rh-banner .bn-dots{display:flex;justify-content:center;align-items:center;gap:6px;padding:14px 0 2px}",
+    "#rh-banner .rh-dot:focus-visible{outline:2px solid var(--rb-vino);outline-offset:3px}",
 
     /* categorias: carrusel tipo Puck, foto y nombre abajo */
     "#rh-categorias .rh-hd{margin-bottom:26px}",
