@@ -156,12 +156,12 @@
       titulo: "Lo que tu perro necesita de verdad",   /* título de la página para Google (no se ve) */
       segundos: 6,
       slides: [
-        { imgCompu: "https://i.ibb.co/xKhK6ckL/1web.jpg",
-          imgCelu: "https://i.ibb.co/cSKws2W6/1cel.jpg",
+        { imgCompu: "https://i.ibb.co/N2tCN4Cg/1web.jpg",
+          imgCelu: "https://i.ibb.co/yc6N0Y7z/1cel.jpg",
           url: "/paseos-y-viajes/arneses/",
           alt: "Lo que tu perro necesita de verdad. Paseo, juego, cuidado y snacks, todo seleccionado por educadores caninos, pensando en su bienestar." },
-        { imgCompu: "https://i.ibb.co/Y70THKJ2/2web.jpg",
-          imgCelu: "https://i.ibb.co/7J3tnZtn/2cel.jpg",
+        { imgCompu: "https://i.ibb.co/qL2Rt3XM/2-web.jpg",
+          imgCelu: "https://i.ibb.co/fd6dmfmx/2cel.jpg",
           url: "/productos/",
           alt: "Elegí tranquilo: del resto nos ocupamos nosotros" }
       ]
