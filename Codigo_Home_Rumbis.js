@@ -156,14 +156,14 @@
       titulo: "Lo que tu perro necesita de verdad",   /* título de la página para Google (no se ve) */
       segundos: 6,
       slides: [
-        { imgCompu: "https://i.ibb.co/N2tCN4Cg/1web.jpg",
+        { imgCompu: "https://i.ibb.co/8DVBv5Lm/Web1.jpg",
           imgCelu: "https://i.ibb.co/yc6N0Y7z/1cel.jpg",
           url: "/paseos-y-viajes/arneses/",
-          alt: "Lo que tu perro necesita de verdad. Paseo, juego, cuidado y snacks, todo seleccionado por educadores caninos, pensando en su bienestar." },
+          alt: "Lo que tu perro necesita de verdad. Paseo, juego, cuidado, accesorios y snacks, todo seleccionado por educadores caninos, pensando en su bienestar." },
         { imgCompu: "https://i.ibb.co/qL2Rt3XM/2-web.jpg",
           imgCelu: "https://i.ibb.co/fd6dmfmx/2cel.jpg",
           url: "/productos/",
-          alt: "Elegí tranquilo: del resto nos ocupamos nosotros" }
+          alt: "6 cuotas sin interés. Envío a todo el país. Primer cambio de talle gratis." }
       ]
     },
 
@@ -576,13 +576,14 @@
     "@media(min-width:900px){.rh-links{display:flex}.rh-burger{display:none}:root{--rh-head:74px}}",
 
     /* ---------- menu movil ------------------------------------- */
-    "#rh-drawer{position:fixed;inset:0;z-index:9995;background:var(--rb-hueso);transform:translateX(100%);",
-    "transition:transform .32s cubic-bezier(.4,0,.2,1);display:flex;flex-direction:column;padding:20px 22px 30px}",
+    "#rh-drawer{position:fixed;inset:0 auto 0 0;width:min(88vw,400px);height:100vh;height:100dvh;z-index:9995;background:var(--rb-hueso);transform:translateX(-105%);",
+    "transition:transform .32s cubic-bezier(.4,0,.2,1);display:flex;flex-direction:column;padding:0;box-shadow:18px 0 48px rgba(110,49,60,.14)}",
     "#rh-drawer.on{transform:none}",
-    "#rh-drawer .dr-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:26px}",
-    "#rh-drawer nav{display:flex;flex-direction:column;gap:2px}",
-    "#rh-drawer nav a{font-family:var(--rb-display);font-size:27px;font-weight:600;color:var(--rb-vino);padding:13px 0;border-bottom:1px solid var(--rb-line)}",
-    "#rh-drawer .dr-ft{margin-top:auto;display:flex;flex-direction:column;gap:12px}",
+    "#rh-drawer .dr-top{display:flex;align-items:center;justify-content:space-between;flex:0 0 auto;margin:0;padding:12px 20px;background:#fff;border-bottom:1px solid var(--rb-line)}",
+    "#rh-drawer nav{display:flex;flex:1 1 auto;min-height:0;flex-direction:column;gap:0;overflow-y:auto;padding:14px 20px 20px;overscroll-behavior:contain;-webkit-overflow-scrolling:touch}",
+    "#rh-drawer nav>a{font-family:var(--rb-sans);font-size:15px;line-height:1.35;font-weight:800;letter-spacing:.01em;color:var(--rb-vino);padding:13px 0 10px;border-bottom:1px solid var(--rb-line)}",
+    "#rh-drawer nav>a:first-child{font-size:14px;color:var(--rb-muted);padding-top:4px;padding-bottom:13px;margin-bottom:2px}",
+    "#rh-drawer .dr-ft{flex:0 0 auto;margin-top:0;display:flex;flex-direction:column;gap:8px;padding:12px 20px max(16px,env(safe-area-inset-bottom));background:#fff;border-top:1px solid var(--rb-line)}",
 
     /* ---------- hero ------------------------------------------- */
     "#rh-hero{position:relative;background:linear-gradient(160deg,#FDF6F0 0%,#F7E6DA 55%,#F0CDB7 100%);overflow:hidden}",
@@ -811,11 +812,32 @@
     ".rh-drop a:hover{background:var(--rb-vino-sf);color:var(--rb-vino)}",
     ".rh-drop .dd-all{color:var(--rb-vino);font-weight:800;border-bottom:1px solid var(--rb-line);border-radius:10px 10px 0 0;margin-bottom:4px}",
 
-    /* submenu dentro del menu movil */
-    "#rh-drawer .dr-sub{display:flex;flex-wrap:wrap;gap:7px;padding:0 0 14px}",
-    "#rh-drawer .dr-sub a{font-family:var(--rb-sans);font-size:12px;font-weight:700;color:var(--rb-tinta);",
-    "background:var(--rb-vino-sf);border:0;border-radius:99px;padding:8px 12px}",
+    /* subcategorias del menu movil: lista clara, sin pastillas apretadas */
+    "#rh-drawer .dr-sub{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));column-gap:14px;row-gap:0;padding:3px 0 13px}",
+    "#rh-drawer .dr-sub a{font-family:var(--rb-sans);font-size:13px;line-height:1.4;font-weight:500;color:#55494A;",
+    "background:transparent;border:0;border-radius:0;padding:8px 2px;overflow-wrap:anywhere}",
+    "#rh-drawer .dr-sub a:hover{color:var(--rb-vino);background:transparent}",
     "#rh-drawer nav{overflow-y:auto}",
+    "#rh-drawer .dr-acc{padding:7px 0;font-size:13px;letter-spacing:.02em}",
+    "#rh-drawer .dr-ft .rh-cta{min-height:48px;padding:13px 18px;border-radius:999px;font-size:13px;letter-spacing:.06em}",
+
+    /* mega menu de escritorio en columnas, inspirado en la referencia */
+    "#rh-desktop-nav{display:none;align-items:center;margin-left:28px}",
+    "#rh-products{display:inline-flex;align-items:center;gap:8px;border:0;background:transparent;padding:12px 0;color:var(--rb-vino);font:800 13px var(--rb-sans);letter-spacing:.08em;text-transform:uppercase;cursor:pointer}",
+    "#rh-products svg{width:13px;height:13px;transition:transform .2s ease}",
+    "#rh-products[aria-expanded='true'] svg{transform:rotate(180deg)}",
+    "#rh-mega{position:absolute;z-index:9991;top:100%;left:0;right:0;background:#fff;border-top:1px solid var(--rb-line);box-shadow:0 18px 32px rgba(70,38,42,.12);opacity:0;visibility:hidden;transform:translateY(8px);transition:opacity .18s ease,transform .18s ease,visibility .18s ease}",
+    "#rh-mega.on{opacity:1;visibility:visible;transform:none}",
+    "#rh-mega .mega-inner{max-width:1380px;margin:0 auto;padding:28px 34px 32px}",
+    "#rh-mega .mega-grid{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:24px 28px}",
+    "#rh-mega .mega-col>a{display:block;margin:0 0 12px;color:#252122;font-size:13px;line-height:1.3;font-weight:800;letter-spacing:.08em;text-transform:uppercase}",
+    "#rh-mega .mega-col .mega-sub{display:flex;flex-direction:column;gap:8px}",
+    "#rh-mega .mega-col .mega-sub a{color:#3F3838;font-size:13px;line-height:1.4;font-weight:500}",
+    "#rh-mega .mega-col a:hover{color:var(--rb-vino)}",
+    "#rh-mega .mega-all{display:inline-block;margin:0 0 20px;color:var(--rb-vino);font-size:12px;font-weight:800;letter-spacing:.06em;text-transform:uppercase}",
+    "@media(min-width:900px){#rh-desktop-nav{display:flex}#rh-mega .mega-inner{padding-left:38px;padding-right:38px}}",
+    "@media(min-width:900px) and (max-width:1120px){#rh-mega .mega-grid{grid-template-columns:repeat(4,minmax(0,1fr));gap:20px}}",
+    "@media(max-width:899px){#rh-mega{display:none}}",
 
     /* bloque editorial ancho */
     ".rh-ed{position:relative;min-height:440px;display:flex;align-items:flex-end;border-radius:0;overflow:hidden}",
@@ -1065,7 +1087,7 @@
     /* foco de teclado visible */
     "#rh-head a:focus-visible,#rh-head button:focus-visible,#rh-drawer .dr-top button:focus-visible{outline:2px solid var(--rb-vino);outline-offset:3px}",
     /* menu movil: la franja de arriba repite el header */
-    "#rh-drawer .dr-top{background:var(--rh-head-bg);margin:-20px -22px 26px;padding:11px 22px;border-bottom:1px solid var(--rb-line)}"
+    "#rh-drawer .dr-top{background:var(--rh-head-bg);margin:0;padding:11px 20px;border-bottom:1px solid var(--rb-line)}"
   ].join(""));
 
   /* ---- 4i. Estilos v2.5: perrito del logo en el hero ----------- */
@@ -1113,9 +1135,10 @@
     "#rh-head .rh-acts{justify-self:end;margin-left:0;gap:0}",
     "#rh-head .rh-burger{display:inline-flex}",
     "#rh-head .rh-logo .lg-full,#rh-drawer .rh-logo .lg-full{height:26px;width:auto;max-width:42vw;object-fit:contain}",
+    "#rh-drawer .rh-logo .lg-full{height:34px;max-width:60vw}",
     "#rh-head .ib-acc{display:none}",
     "@media(min-width:600px){#rh-head .ib-acc{display:inline-flex}#rh-head .rh-acts{gap:4px}}",
-    "@media(min-width:900px){#rh-head .rh-nav{padding:0 18px}#rh-head .rh-logo .lg-full{height:34px}}",
+    "@media(min-width:900px){#rh-head .rh-nav{display:flex;justify-content:flex-start;gap:28px;padding:0 28px}#rh-head .nv-l{display:none}#rh-head .rh-logo{margin-right:4px}#rh-head .rh-logo .lg-full{height:34px}#rh-head .rh-acts{margin-left:auto}}",
 
     /* menu lateral: sale desde la izquierda; en compu es un panel */
     "#rh-drawer{transform:translateX(-100%);visibility:hidden;transition:transform .32s cubic-bezier(.4,0,.2,1),visibility 0s linear .32s}",
@@ -1123,7 +1146,8 @@
     "#rh-drawer .dr-acc{display:block;text-align:center;font-size:13px;font-weight:800;letter-spacing:.06em;color:var(--rb-vino);padding:8px 0;text-decoration:none}",
     "#rh-dr-bg{position:fixed;inset:0;z-index:9994;background:rgba(110,49,60,.42);opacity:0;visibility:hidden;transition:opacity .3s ease,visibility .3s ease}",
     "#rh-dr-bg.on{opacity:1;visibility:visible}",
-    "@media(min-width:600px){#rh-drawer{right:auto;width:420px}#rh-drawer.on{box-shadow:24px 0 60px rgba(110,49,60,.2)}}",
+    "@media(min-width:600px) and (max-width:899px){#rh-drawer{right:auto;width:min(420px,88vw)}#rh-drawer.on{box-shadow:24px 0 60px rgba(110,49,60,.2)}}",
+    "@media(min-width:900px){#rh-head .rh-burger{display:none}}",
 
     /* banners: la foto entera, sin recortar */
     "#rh-banner{position:relative;background:#fff}",
@@ -1231,11 +1255,19 @@
       '<header id="rh-head"><div class="rh-nav">' +
         '<div class="nv-l"><button class="rh-ib rh-burger" id="rh-burger" type="button" aria-label="Menú" aria-controls="rh-drawer" aria-expanded="false">' + svg('<path d="M4 7h16M4 12h16M4 17h16"/>') + "</button></div>" +
         '<a class="rh-logo" href="/">' + logoHeaderHTML() + "</a>" +
+        '<nav id="rh-desktop-nav" aria-label="Navegación principal"><button id="rh-products" type="button" aria-controls="rh-mega" aria-expanded="false">Productos' + svg('<path d="m6 9 6 6 6-6"/>') + "</button></nav>" +
         '<div class="rh-acts">' +
           '<button class="rh-ib" id="rh-search" type="button" aria-label="Buscar">' + svg('<circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/>') + "</button>" +
           '<a class="rh-ib ib-acc" href="/account/login/" aria-label="Mi cuenta">' + svg('<circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 3.6-6.5 8-6.5s8 2.5 8 6.5"/>') + "</a>" +
           '<a class="rh-ib" id="rh-cart" href="/carrito" aria-label="Carrito">' + svg('<path d="M6 7h12l-1.2 12.2a2 2 0 0 1-2 1.8H9.2a2 2 0 0 1-2-1.8z"/><path d="M9 7a3 3 0 0 1 6 0"/>') + '<b style="display:none">0</b></a>' +
-        "</div></div></header>";
+        "</div></div>" + desktopMega() + "</header>";
+  }
+  function desktopMega() {
+    var cols = (CFG.menu || []).map(function (m) {
+      var subs = (m.subs || []).map(function (x) { return '<a href="' + esc(x.u) + '">' + esc(x.t) + "</a>"; }).join("");
+      return '<section class="mega-col"><a href="' + esc(m.url) + '">' + esc(m.texto) + '</a><div class="mega-sub">' + subs + "</div></section>";
+    }).join("");
+    return '<div id="rh-mega" aria-label="Categorías de productos"><div class="mega-inner"><a class="mega-all" href="/productos/">Todos los productos</a><div class="mega-grid">' + cols + "</div></div></div>";
   }
   function drawer() {
     var li = (CFG.menu || []).map(function (m) {
@@ -1845,6 +1877,23 @@
     if (dr) Array.prototype.slice.call(dr.querySelectorAll("a")).forEach(function (a) {
       a.addEventListener("click", function () { abrir(false); });
     });
+
+    /* menu desplegable de productos en escritorio */
+    var productos = document.getElementById("rh-products"), mega = document.getElementById("rh-mega"), headMenu = document.getElementById("rh-head");
+    function abrirMega(v) {
+      if (!productos || !mega) return;
+      mega.classList.toggle("on", v);
+      productos.setAttribute("aria-expanded", v ? "true" : "false");
+    }
+    if (productos && mega) {
+      productos.addEventListener("click", function (e) { e.stopPropagation(); abrirMega(!mega.classList.contains("on")); });
+      if (headMenu) headMenu.addEventListener("mouseleave", function () { abrirMega(false); });
+      mega.addEventListener("click", function (e) { e.stopPropagation(); });
+      document.addEventListener("click", function (e) {
+        if (!mega.contains(e.target) && !productos.contains(e.target)) abrirMega(false);
+      });
+      document.addEventListener("keydown", function (e) { if (e.key === "Escape") abrirMega(false); });
+    }
 
     /* buscador */
     var find = document.getElementById("rh-find"), sb = document.getElementById("rh-search");
