@@ -6,6 +6,8 @@
    se ve), el isotipo pasa a una versión liviana (de 285 KB a 25 KB) y
    los 4 banners pasan a WebP (casi la mitad de peso). Sale el botón
    flotante de WhatsApp propio: el tema ya pone uno y se veían dos.
+   Cortina: si la etiqueta de GTM tapa la página mientras carga, el
+   código la destapa (clase rh-on o rh-listo en <html>).
    v2.6: correcciones de la planilla "Diseño HOME". Arriba, al estilo
    Puck: menú hamburguesa a la izquierda y RUMBIS al centro, y el hero
    pasa a ser un carrusel de 2 banners (foto con el texto incluido,
@@ -103,7 +105,7 @@
       horario: "Lunes a viernes de 9 a 19 hs",
       instagram: "https://instagram.com/rumbis.ar",
       facebook: "https://www.facebook.com/profile.php?id=61575780800573",
-      email: "contacto.rumbis@gmail.com",
+      email: "hola@rumbis.com.ar",
       cuit: "27313274034"
     },
 
@@ -1837,6 +1839,7 @@
   function devolverTema() {
     temaDevuelto = true;
     document.documentElement.classList.remove("rh-on");
+    document.documentElement.classList.add("rh-listo");   /* v2.7: saca la cortina de la etiqueta de GTM */
     CAPA.style.display = "none";   /* sin header ni pie propios encima del tema */
     Array.prototype.slice.call(document.querySelectorAll("[data-rh-hid]")).forEach(function (el) {
       el.style.display = el.getAttribute("data-rh-disp") || "";
