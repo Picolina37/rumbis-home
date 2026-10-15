@@ -103,7 +103,7 @@
       horario: "Lunes a viernes de 9 a 19 hs",
       instagram: "https://instagram.com/rumbis.ar",
       facebook: "https://www.facebook.com/profile.php?id=61575780800573",
-      email: "hola@rumbis.com.ar",
+      email: "contacto.rumbis@gmail.com",
       cuit: "27313274034"
     },
 
