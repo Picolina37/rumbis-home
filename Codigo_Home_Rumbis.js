@@ -4,7 +4,8 @@
    v2.7: velocidad. El segundo banner espera a que se lo necesite (antes
    bajaba junto con el primero y le sacaba velocidad a lo primero que
    se ve), el isotipo pasa a una versión liviana (de 285 KB a 25 KB) y
-   los 4 banners pasan a WebP (casi la mitad de peso).
+   los 4 banners pasan a WebP (casi la mitad de peso). Sale el botón
+   flotante de WhatsApp propio: el tema ya pone uno y se veían dos.
    v2.6: correcciones de la planilla "Diseño HOME". Arriba, al estilo
    Puck: menú hamburguesa a la izquierda y RUMBIS al centro, y el hero
    pasa a ser un carrusel de 2 banners (foto con el texto incluido,
@@ -98,6 +99,7 @@
       colorDestacado: "#2F4A3A",
       claim: "Todo para la vida con perro: paseo, juego, cuidado y snacks. Envíos a todo el país con Correo Argentino.",
       whatsapp: "541151092098",
+      whatsappFlotante: false,   /* v2.7: el botón verde flotante ya lo pone el tema; true = suma el propio */
       horario: "Lunes a viernes de 9 a 19 hs",
       instagram: "https://instagram.com/rumbis.ar",
       facebook: "https://www.facebook.com/profile.php?id=61575780800573",
@@ -1588,8 +1590,10 @@
   }
 
   function flotantes() {
-    return '<a id="rh-wa" href="' + esc(wa("Hola Rumbis, tengo una consulta")) + '" target="_blank" rel="noopener" aria-label="WhatsApp">' +
-      svg('<path d="M21 12a9 9 0 0 1-13.4 7.8L3 21l1.3-4.4A9 9 0 1 1 21 12z"/><path d="M8.5 9.5c0 4 2 6 6 6 1-.2 1.5-.8 1.5-1.5l-2-1-1 1c-1-.5-2-1.5-2.5-2.5l1-1-1-2c-.7 0-1.3.5-2 1z"/>', 25) + "</a>" +
+    /* v2.7: el botón flotante de WhatsApp ya lo pone el tema de Tiendanube en toda la tienda;
+       el propio quedaba duplicado. whatsappFlotante:true en marca lo vuelve a mostrar */
+    return (CFG.marca.whatsappFlotante ? '<a id="rh-wa" href="' + esc(wa("Hola Rumbis, tengo una consulta")) + '" target="_blank" rel="noopener" aria-label="WhatsApp">' +
+      svg('<path d="M21 12a9 9 0 0 1-13.4 7.8L3 21l1.3-4.4A9 9 0 1 1 21 12z"/><path d="M8.5 9.5c0 4 2 6 6 6 1-.2 1.5-.8 1.5-1.5l-2-1-1 1c-1-.5-2-1.5-2.5-2.5l1-1-1-2c-.7 0-1.3.5-2 1z"/>', 25) + "</a>" : "") +
       '<button id="rh-top" aria-label="Volver arriba">' + svg('<path d="M12 19V5M6 11l6-6 6 6"/>', 19) + "</button>";
   }
 
