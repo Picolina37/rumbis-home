@@ -1,5 +1,7 @@
 /* ================================================================
-   RUMBIS · CARRITO DE COSTADO CON DISEÑO PROPIO · v1.1 (02/11/2026)
+   RUMBIS · CARRITO DE COSTADO CON DISEÑO PROPIO · v1.2 (02/11/2026)
+   v1.2: abre el carrito con clic nativo (antes no abría) y, si hay envío
+         gratis, muestra solo las opciones gratis (CONFIG.soloEnvioGratis).
    v1.1: al agregar CUALQUIER producto se cierra el aviso "¡Agregado al carrito!"
          del tema y se abre este carrito de costado (CONFIG.abrirAlAgregar).
    Se carga en TODA la tienda desde Google Tag Manager (como la home).
@@ -23,6 +25,9 @@
   var CONFIG={
     /* true = al agregar un producto se abre el carrito de costado (en vez del aviso del tema) */
     abrirAlAgregar:true,
+    /* true = si alguna opción de envío sale gratis, en el carrito se muestran solo las gratis
+       (con un link para ver las demás) */
+    soloEnvioGratis:true,
     /* ENVÍO GRATIS
        modo "doble" = dos montos (AMBA y resto del país), como hoy.
        modo "unico" = un solo monto para todos (usa envio.unico). */
@@ -58,7 +63,9 @@
       transfer:"o <b>{monto}</b> pagando con transferencia ({pct}% OFF)",
       pagar:"Iniciar compra",
       sumar:"+ Sumar",
-      sumando:"Sumando…"
+      sumando:"Sumando…",
+      otrosEnvios:"Ver otras opciones de envío ({n})",
+      menosEnvios:"Mostrar solo las gratis"
     }
   };
   /* ===================== FIN CONFIG ======================== */
@@ -134,7 +141,8 @@
   +"#rc-ahorro{margin:0 0 12px;font-size:13px;font-weight:800;color:var(--c-verde)}"
   +"#modal-cart .js-ajax-cart-submit input[type='submit'],#modal-cart [data-component='cart.checkout-button']{width:100%!important;border:0!important;border-radius:99px!important;padding:18px 20px!important;font-family:Manrope,sans-serif!important;font-size:15px!important;font-weight:800!important;letter-spacing:.08em!important;text-transform:uppercase!important;color:#FDFCF7!important;background:linear-gradient(135deg,#A9505F,#944654 55%,#6E313C)!important;box-shadow:0 12px 26px rgba(148,70,84,.3)!important}"
   +"#rc-transfer{margin:10px 0 14px;text-align:center;font-size:13px;color:var(--c-muted)}"
-  +"#rc-transfer b{color:var(--c-tinta);font-weight:800}";
+  +"#rc-transfer b{color:var(--c-tinta);font-weight:800}"
+  +"#rc-otros{display:block;width:100%;margin:8px 0 4px;padding:8px;border:0;background:transparent;color:var(--c-vino);font-family:Manrope,sans-serif;font-size:13px;font-weight:700;text-decoration:underline;text-underline-offset:3px;cursor:pointer}";
  
   var TRUCK='<svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="6" width="14" height="11" rx="1.5"/><path d="M15 9h4l3 3.5V17h-7z"/><circle cx="6" cy="19" r="2"/><circle cx="18" cy="19" r="2"/></svg>';
   var TAG='<svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.6 13.4 13.4 20.6a2 2 0 0 1-2.8 0L3 13V3h10l7.6 7.6a2 2 0 0 1 0 2.8z"/><circle cx="7.5" cy="7.5" r="1.5"/></svg>';
@@ -283,35 +291,64 @@
     var sb=$(".js-ajax-cart-submit",M), pct=CONFIG.transferencia;
     bloque("rc-transfer","despues",sb,lleno&&pct&&base>0?tpl(T.transfer,{monto:money(base*(1-pct/100)),pct:pct}):"");
     var btn=$("[data-component='cart.checkout-button']",M); if(btn&&btn.value!==T.pagar) btn.value=T.pagar;
+    envios();
     setTimeout(function(){ pintando=!1; },0);
     if(lleno&&!cargado){ cargado=!0; Promise.all(SUG.map(cargar)).then(function(){ pintar(!0); }); }
   }
  
-  /* ---------- v1.1 · ABRIR EL CARRITO AL AGREGAR ---------- */
+  /* ---------- v1.2 · ABRIR EL CARRITO AL AGREGAR ----------
+     Clic NATIVO (el tema no escucha clics de jQuery). Primero usa el botón
+     "Ver carrito" del propio aviso del tema; si no hay aviso, el ícono del
+     carrito. Solo esconde el aviso cuando el carrito ya quedó abierto. */
   function visible(e){ if(!e) return !1; var s=getComputedStyle(e); return s.display!=="none"&&s.visibility!=="hidden"&&e.offsetWidth>0&&e.offsetHeight>0; }
-  function abierto(){ return visible($("#modal-cart")); }
+  function abierto(){ var m=$("#modal-cart"); return !!m&&(m.classList.contains("modal-show")||visible(m)); }
+  function avisos(){
+    return $$(".js-alert-added-to-cart,.modal,.js-modal,[class*='notification']").filter(function(m){
+      return m.id!=="modal-cart"&&!m.closest("#modal-cart")&&visible(m)&&/agregado al carrito|agregaste|ver carrito/i.test(m.textContent||"");
+    });
+  }
   function cerrarAvisos(){
-    $$(".js-alert-added-to-cart").forEach(function(n){ n.style.display="none"; n.classList.add("notification-hidden"); });
-    $$(".modal,.js-modal,[class*='notification']").forEach(function(m){
-      if(m.id==="modal-cart"||m.closest("#modal-cart")||!visible(m)) return;
-      if(!/agregado al carrito|agregaste|ver carrito/i.test(m.textContent||"")) return;
-      var x=m.querySelector(".js-modal-close,.js-cart-notification-close,.js-notification-close,[data-dismiss],.modal-close,.close");
-      if(x){ try{ if(window.jQuery) jQuery(x).trigger("click"); else x.click(); }catch(e){} }
+    if(!abierto()) return;
+    avisos().forEach(function(m){
+      var x=m.querySelector(".js-cart-notification-close:not([data-toggle]),.js-notification-close,.modal-close,.close");
+      if(x&&visible(x)) try{ x.click(); }catch(e){}
       if(visible(m)) m.style.display="none";
     });
   }
   function abrirDrawer(){
-    cerrarAvisos();
-    if(abierto()) return !0;
-    var c=$(".js-toggle-cart[data-toggle='#modal-cart']")||$(".js-toggle-cart"); if(!c) return !1;
-    if(window.jQuery) jQuery(c).trigger("click"); else c.click();
+    if(abierto()){ cerrarAvisos(); return !0; }
+    var b=null; avisos().some(function(m){ b=m.querySelector("[data-toggle='#modal-cart']"); return !!b; });
+    var c=b||$(".js-toggle-cart[data-toggle='#modal-cart']")||$(".js-toggle-cart"); if(!c) return !1;
+    try{ c.click(); }catch(e){ return !1; }
+    setTimeout(cerrarAvisos,500);
     return !0;
   }
   window.RMB_CART_ABRIR=abrirDrawer;
   if(CONFIG.abrirAlAgregar){
     document.addEventListener("productAddedToCart",function(){
-      setTimeout(abrirDrawer,300); setTimeout(cerrarAvisos,800); setTimeout(cerrarAvisos,1600);
+      setTimeout(function(){ if(!abierto()) abrirDrawer(); else cerrarAvisos(); },450);
+      setTimeout(function(){ if(!abierto()) abrirDrawer(); cerrarAvisos(); },1300);
     });
+  }
+ 
+  /* ---------- v1.2 · SOLO ENVÍOS GRATIS ---------- */
+  var verTodos=!1;
+  function envios(){
+    if(!CONFIG.soloEnvioGratis) return;
+    var R=$("#modal-cart .js-shipping-calculator-response"); if(!R) return;
+    var filas=[], vis=[];
+    $$("input[type='radio']",R).forEach(function(i){
+      var f=i.closest("label")||i.closest("li")||i.parentElement; if(f&&vis.indexOf(f)<0){ vis.push(f); filas.push(f); }
+    });
+    var gratis=filas.filter(function(f){ return /gratis/i.test(f.textContent||""); });
+    var otras=filas.filter(function(f){ return gratis.indexOf(f)<0; });
+    var L=document.getElementById("rc-otros");
+    if(!gratis.length||!otras.length){ otras.concat(gratis).forEach(function(f){ f.style.display=""; }); if(L) L.remove(); return; }
+    otras.forEach(function(f){ f.style.display=verTodos?"":"none"; });
+    if(!L){ L=document.createElement("button"); L.type="button"; L.id="rc-otros"; }
+    var tx=verTodos?T.menosEnvios:tpl(T.otrosEnvios,{n:otras.length});
+    if(L.textContent!==tx) L.textContent=tx;
+    if(L.parentNode!==R) R.appendChild(L);
   }
  
   function iniciar(){
@@ -321,6 +358,7 @@
     var t; new MutationObserver(function(){ if(pintando) return; clearTimeout(t); t=setTimeout(pintar,120); })
       .observe(M,{childList:!0,subtree:!0,characterData:!0});
     M.addEventListener("click",function(e){
+      if(e.target.id==="rc-otros"){ e.preventDefault(); verTodos=!verTodos; pintando=!0; envios(); setTimeout(function(){ pintando=!1; },0); return; }
       var b=e.target.closest&&e.target.closest(".rc-add"); if(!b) return;
       e.preventDefault(); var x=SUG[+b.getAttribute("data-i")]; if(x&&!x.busy) sumar(x,b);
     });
