@@ -1,13 +1,15 @@
 /* ================================================================
-   RUMBIS · CARRITO DE COSTADO CON DISEÑO PROPIO · v1.2 (02/11/2026)
-   v1.2: abre el carrito con clic nativo (antes no abría) y, si hay envío
-         gratis, muestra solo las opciones gratis (CONFIG.soloEnvioGratis).
+   RUMBIS · CARRITO DE COSTADO CON DISEÑO PROPIO · v1.3 (02/11/2026)
+   v1.3: si el carrito llega al envío gratis ($120.000 AMBA / $180.000 resto),
+         se esconden todas las opciones de envío y solo dice "envío gratis".
+         Si no llega, se ven las opciones de siempre del tema.
+   v1.2: abre el carrito con clic nativo al agregar un producto (antes no abría).
    v1.1: al agregar CUALQUIER producto se cierra el aviso "¡Agregado al carrito!"
          del tema y se abre este carrito de costado (CONFIG.abrirAlAgregar).
    Se carga en TODA la tienda desde Google Tag Manager (como la home).
    Trabaja sobre el carrito del tema Amazonas (#modal-cart): no lo
    reemplaza, le suma diseño y bloques.
- 
+
    Qué hace:
    1. Barra de envío gratis arriba ("Te faltan $X…" / "¡Tenés envío gratis!")
    2. Aviso del descuento por cantidad (5% llevando 2 · 10% llevando 3)
@@ -15,19 +17,20 @@
    4. "Completá el paseo": productos sugeridos con "+ Sumar" adentro del carrito
    5. Total, "Ahorrás $X" (solo si hay descuento real aplicado),
       botón de pago en bordó y precio con transferencia debajo
- 
+
    ⚙️ Lo único que se edita es el bloque CONFIG de acá abajo.
    ================================================================ */
 !function(){
   if(window.RMB_CART) return; window.RMB_CART=!0;
- 
+
   /* ======================= ⚙️ CONFIG ======================= */
   var CONFIG={
     /* true = al agregar un producto se abre el carrito de costado (en vez del aviso del tema) */
     abrirAlAgregar:true,
-    /* true = si alguna opción de envío sale gratis, en el carrito se muestran solo las gratis
-       (con un link para ver las demás) */
-    soloEnvioGratis:true,
+    /* true = si el carrito llega al monto de envío gratis, se esconden las opciones de envío
+       y solo se ve el cartel de envío gratis (vos elegís después por dónde mandarlo).
+       AMBA = códigos postales 1000 a 1999 (CABA y Gran Buenos Aires). */
+    ocultarEnviosSiGratis:true,
     /* ENVÍO GRATIS
        modo "doble" = dos montos (AMBA y resto del país), como hoy.
        modo "unico" = un solo monto para todos (usa envio.unico). */
@@ -64,12 +67,12 @@
       pagar:"Iniciar compra",
       sumar:"+ Sumar",
       sumando:"Sumando…",
-      otrosEnvios:"Ver otras opciones de envío ({n})",
-      menosEnvios:"Mostrar solo las gratis"
+      envioGratis:"¡Tu envío es gratis! 🎉",
+      envioGratisNota:""
     }
   };
   /* ===================== FIN CONFIG ======================== */
- 
+
   var T=CONFIG.textos;
   var CSS=
    "@import url('https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,500..700;1,9..144,500&family=Manrope:wght@400;500;600;700;800&display=swap');"
@@ -142,11 +145,15 @@
   +"#modal-cart .js-ajax-cart-submit input[type='submit'],#modal-cart [data-component='cart.checkout-button']{width:100%!important;border:0!important;border-radius:99px!important;padding:18px 20px!important;font-family:Manrope,sans-serif!important;font-size:15px!important;font-weight:800!important;letter-spacing:.08em!important;text-transform:uppercase!important;color:#FDFCF7!important;background:linear-gradient(135deg,#A9505F,#944654 55%,#6E313C)!important;box-shadow:0 12px 26px rgba(148,70,84,.3)!important}"
   +"#rc-transfer{margin:10px 0 14px;text-align:center;font-size:13px;color:var(--c-muted)}"
   +"#rc-transfer b{color:var(--c-tinta);font-weight:800}"
-  +"#rc-otros{display:block;width:100%;margin:8px 0 4px;padding:8px;border:0;background:transparent;color:var(--c-vino);font-family:Manrope,sans-serif;font-size:13px;font-weight:700;text-decoration:underline;text-underline-offset:3px;cursor:pointer}";
- 
+  +"#modal-cart.rc-envgratis .js-shipping-calculator-response{display:none!important}"
+  +"#rc-gratis{border-radius:16px;padding:14px 16px;margin:10px 0;background:#EEF6F3;border:1px solid rgba(27,95,84,.35);display:flex;gap:10px;align-items:flex-start}"
+  +"#rc-gratis .rc-ic{flex:0 0 auto;color:var(--c-verde);margin-top:1px}"
+  +"#rc-gratis b{display:block;font-family:Fraunces,Georgia,serif;font-size:17px;font-weight:600;color:var(--c-verde)}"
+  +"#rc-gratis span span{display:block;margin-top:3px;font-size:12.5px;color:var(--c-muted)}";
+
   var TRUCK='<svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="6" width="14" height="11" rx="1.5"/><path d="M15 9h4l3 3.5V17h-7z"/><circle cx="6" cy="19" r="2"/><circle cx="18" cy="19" r="2"/></svg>';
   var TAG='<svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.6 13.4 13.4 20.6a2 2 0 0 1-2.8 0L3 13V3h10l7.6 7.6a2 2 0 0 1 0 2.8z"/><circle cx="7.5" cy="7.5" r="1.5"/></svg>';
- 
+
   function $(s,r){ return (r||document).querySelector(s); }
   function $$(s,r){ return [].slice.call((r||document).querySelectorAll(s)); }
   function esc(s){ return String(s==null?"":s).replace(/[&<>"']/g,function(c){return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c];}); }
@@ -154,7 +161,7 @@
   function tpl(s,o){ return String(s||"").replace(/\{(\w+)\}/g,function(m,k){ return o[k]!=null?o[k]:m; }); }
   /* "$52.700,00" -> 52700 */
   function num(t){ t=String(t||"").replace(/[^\d,.]/g,""); if(!t) return 0; t=t.replace(/\./g,"").replace(",","."); return parseFloat(t)||0; }
- 
+
   function datos(){
     var M=$("#modal-cart"); if(!M) return null;
     var n=0; $$(".js-cart-quantity-input",M).forEach(function(i){ n+=parseInt(i.value,10)||0; });
@@ -164,7 +171,7 @@
     var envTxt=(($("#shipping-cost",M)||{}).textContent)||"", env=/\d/.test(envTxt)?num(envTxt):0;
     return {M:M,n:n,sub:sub,tot:tot,env:env};
   }
- 
+
   /* ---------- 1. ENVÍO GRATIS ---------- */
   function envio(D){
     var E=CONFIG.envio, base=D.sub, h="", pct=0, ok=!1, nota="";
@@ -181,7 +188,7 @@
       +'<div class="rc-bar"><i style="width:'+pct.toFixed(1)+'%"></i></div>'
       +(nota?'<p class="rc-en">'+nota+'</p>':"")+'<!--'+(ok?"ok":"no")+'-->';
   }
- 
+
   /* ---------- 2. DESCUENTO POR CANTIDAD ---------- */
   function promo(n){
     var ES=CONFIG.escalones.slice().sort(function(a,b){return a.desde-b.desde;}), act=null, sig=null;
@@ -190,7 +197,7 @@
     if(sig){ var f=sig.desde-n; return {ok:!1,h:tpl(T.promoFalta,{n:f,s:f>1?"s":"",off:sig.off})+(act?" · hoy: "+act.off+"% OFF":"")}; }
     return null;
   }
- 
+
   /* ---------- 4. SUGERIDOS ---------- */
   var SUG=CONFIG.sugeridos.items.map(function(c){ return {c:c,url:c.url||"",ok:!1,pid:"",grupos:[],precio:0,img:"",busy:!1}; });
   var cargado=!1;
@@ -258,7 +265,7 @@
     var fd=new FormData(f);
     fetch(x.act,{method:"POST",body:fd,credentials:"same-origin"}).then(function(){ try{ sessionStorage.setItem("rc_abrir","1"); }catch(e){} location.reload(); });
   }
- 
+
   /* ---------- PINTAR ---------- */
   var pintando=!1;
   function pintar(forzar){
@@ -291,11 +298,11 @@
     var sb=$(".js-ajax-cart-submit",M), pct=CONFIG.transferencia;
     bloque("rc-transfer","despues",sb,lleno&&pct&&base>0?tpl(T.transfer,{monto:money(base*(1-pct/100)),pct:pct}):"");
     var btn=$("[data-component='cart.checkout-button']",M); if(btn&&btn.value!==T.pagar) btn.value=T.pagar;
-    envios();
+    envios(D);
     setTimeout(function(){ pintando=!1; },0);
     if(lleno&&!cargado){ cargado=!0; Promise.all(SUG.map(cargar)).then(function(){ pintar(!0); }); }
   }
- 
+
   /* ---------- v1.2 · ABRIR EL CARRITO AL AGREGAR ----------
      Clic NATIVO (el tema no escucha clics de jQuery). Primero usa el botón
      "Ver carrito" del propio aviso del tema; si no hay aviso, el ícono del
@@ -330,27 +337,35 @@
       setTimeout(function(){ if(!abierto()) abrirDrawer(); cerrarAvisos(); },1300);
     });
   }
- 
+
   /* ---------- v1.2 · SOLO ENVÍOS GRATIS ---------- */
-  var verTodos=!1;
-  function envios(){
-    if(!CONFIG.soloEnvioGratis) return;
-    var R=$("#modal-cart .js-shipping-calculator-response"); if(!R) return;
-    var filas=[], vis=[];
-    $$("input[type='radio']",R).forEach(function(i){
-      var f=i.closest("label")||i.closest("li")||i.parentElement; if(f&&vis.indexOf(f)<0){ vis.push(f); filas.push(f); }
-    });
-    var gratis=filas.filter(function(f){ return /gratis/i.test(f.textContent||""); });
-    var otras=filas.filter(function(f){ return gratis.indexOf(f)<0; });
-    var L=document.getElementById("rc-otros");
-    if(!gratis.length||!otras.length){ otras.concat(gratis).forEach(function(f){ f.style.display=""; }); if(L) L.remove(); return; }
-    otras.forEach(function(f){ f.style.display=verTodos?"":"none"; });
-    if(!L){ L=document.createElement("button"); L.type="button"; L.id="rc-otros"; }
-    var tx=verTodos?T.menosEnvios:tpl(T.otrosEnvios,{n:otras.length});
-    if(L.textContent!==tx) L.textContent=tx;
-    if(L.parentNode!==R) R.appendChild(L);
+
+  /* ---------- v1.3 · ENVÍO GRATIS: ESCONDER OPCIONES ---------- */
+  function cpCliente(M){
+    var z=$(".js-shipping-calculator-current-zip",M), v=z?(z.textContent||"").trim():"";
+    if(!/\d{4}/.test(v)) $$("input[name='zipcode'],input[name='cp'],.js-shipping-input,input[id*='zip'],input[id*='cp']",M).some(function(i){ v=(i.value||"").trim(); return !!v; });
+    var m=v.replace(/\s/g,"").match(/^[A-Za-z]?(\d{4})/);
+    if(!m){ var R=$(".js-shipping-calculator-response",M), t=((R&&R.parentNode)||M).textContent||""; m=t.match(/CP\s*:?\s*[A-Za-z]?(\d{4})/i); }
+    return m?parseInt(m[1],10):0;
   }
- 
+  function esGratis(D){
+    var E=CONFIG.envio;
+    if(E.modo==="unico") return D.sub>=E.unico;
+    if(D.sub>=E.resto) return !0;
+    if(D.sub<E.amba) return !1;
+    var cp=cpCliente(D.M); return cp>=1000&&cp<=1999;
+  }
+  function envios(D){
+    var M=D.M, R=$(".js-shipping-calculator-response",M), box=document.getElementById("rc-gratis");
+    var ok=CONFIG.ocultarEnviosSiGratis&&D.n>0&&!!R&&esGratis(D);
+    M.classList.toggle("rc-envgratis",ok);
+    if(!ok){ if(box) box.remove(); return; }
+    var h='<span class="rc-ic">'+TRUCK+'</span><span><b>'+T.envioGratis+'</b>'+(T.envioGratisNota?'<span>'+T.envioGratisNota+'</span>':'')+'</span>';
+    if(!box){ box=document.createElement("div"); box.id="rc-gratis"; }
+    if(box.innerHTML!==h) box.innerHTML=h;
+    if(box.nextSibling!==R) R.parentNode.insertBefore(box,R);
+  }
+
   function iniciar(){
     var M=$("#modal-cart"); if(!M) return !1;
     if(!document.getElementById("rc-css")){ var s=document.createElement("style"); s.id="rc-css"; s.textContent=CSS; document.head.appendChild(s); }
@@ -358,7 +373,6 @@
     var t; new MutationObserver(function(){ if(pintando) return; clearTimeout(t); t=setTimeout(pintar,120); })
       .observe(M,{childList:!0,subtree:!0,characterData:!0});
     M.addEventListener("click",function(e){
-      if(e.target.id==="rc-otros"){ e.preventDefault(); verTodos=!verTodos; pintando=!0; envios(); setTimeout(function(){ pintando=!1; },0); return; }
       var b=e.target.closest&&e.target.closest(".rc-add"); if(!b) return;
       e.preventDefault(); var x=SUG[+b.getAttribute("data-i")]; if(x&&!x.busy) sumar(x,b);
     });
@@ -374,4 +388,3 @@
     var k=0, iv=setInterval(function(){ if(iniciar()||++k>60) clearInterval(iv); },250);
   }
 }();
- 
