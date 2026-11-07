@@ -1,5 +1,8 @@
 /* ================================================================
-   RUMBIS · CARRITO DE COSTADO CON DISEÑO PROPIO · v1.3 (02/11/2026)
+   RUMBIS · CARRITO DE COSTADO CON DISEÑO PROPIO · v1.3.2 (06/11/2026)
+   v1.3.2: sin aviso de descuento por cantidad (escalones vacío).
+   v1.3.1: donde el tema muestra "Gratis" suelto bajo el subtotal, dice "Envío gratis".
+           Si el cliente ya puso su código postal, la barra habla solo de su zona.
    v1.3: si el carrito llega al envío gratis ($120.000 AMBA / $180.000 resto),
          se esconden todas las opciones de envío y solo dice "envío gratis".
          Si no llega, se ven las opciones de siempre del tema.
@@ -36,7 +39,7 @@
        modo "unico" = un solo monto para todos (usa envio.unico). */
     envio:{ modo:"doble", amba:120000, resto:180000, unico:120000 },
     /* DESCUENTO POR CANTIDAD (tiene que coincidir con la promo de Tiendanube) */
-    escalones:[ {desde:2, off:5}, {desde:3, off:10} ],
+    escalones:[],   /* v1.3.2 (06/11/2026): sin descuento por cantidad (se reemplazó por kits). Para volver: [ {desde:2, off:5}, {desde:3, off:10} ] */
     /* TRANSFERENCIA */
     transferencia:10,
     /* "COMPLETÁ EL PASEO": productos sugeridos.
@@ -68,7 +71,8 @@
       sumar:"+ Sumar",
       sumando:"Sumando…",
       envioGratis:"¡Tu envío es gratis! 🎉",
-      envioGratisNota:""
+      envioGratisNota:"",
+      envioFila:"Envío gratis"
     }
   };
   /* ===================== FIN CONFIG ======================== */
@@ -146,6 +150,8 @@
   +"#rc-transfer{margin:10px 0 14px;text-align:center;font-size:13px;color:var(--c-muted)}"
   +"#rc-transfer b{color:var(--c-tinta);font-weight:800}"
   +"#modal-cart.rc-envgratis .js-shipping-calculator-response{display:none!important}"
+  +"#modal-cart [data-rc-envio]{font-size:0!important}"
+  +"#modal-cart [data-rc-envio]:before{content:attr(data-rc-envio);font-size:18px;font-weight:700;color:var(--c-verde)}"
   +"#rc-gratis{border-radius:16px;padding:14px 16px;margin:10px 0;background:#EEF6F3;border:1px solid rgba(27,95,84,.35);display:flex;gap:10px;align-items:flex-start}"
   +"#rc-gratis .rc-ic{flex:0 0 auto;color:var(--c-verde);margin-top:1px}"
   +"#rc-gratis b{display:block;font-family:Fraunces,Georgia,serif;font-size:17px;font-weight:600;color:var(--c-verde)}"
@@ -179,8 +185,11 @@
       var f=E.unico-base; pct=Math.min(100,base/E.unico*100);
       if(f<=0){ ok=!0; h=T.ok; } else h=tpl(T.faltaUnico,{falta:money(f)});
     } else {
-      var fa=E.amba-base, fr=E.resto-base;
-      if(fr<=0){ ok=!0; pct=100; h=T.okTodo; }
+      var fa=E.amba-base, fr=E.resto-base, cp=cpCliente(D.M), amba=cp>=1000&&cp<=1999;
+      /* v1.3.1: si ya puso su código postal, la barra le habla solo de SU zona */
+      if(cp&&amba){ pct=Math.min(100,base/E.amba*100); if(fa<=0){ ok=!0; h=T.ok; } else h=tpl(T.faltaUnico,{falta:money(fa)}); }
+      else if(cp){ pct=Math.min(100,base/E.resto*100); if(fr<=0){ ok=!0; h=T.ok; } else h=tpl(T.faltaUnico,{falta:money(fr)}); }
+      else if(fr<=0){ ok=!0; pct=100; h=T.okTodo; }
       else if(fa<=0){ ok=!0; pct=Math.min(100,base/E.resto*100); h=T.okAmba; nota=tpl(T.okAmbaNota,{falta:money(fr)}); }
       else { pct=Math.min(100,base/E.amba*100); h=tpl(T.faltaAmba,{falta:money(fa)}); nota=tpl(T.notaResto,{resto:money(E.resto)}); }
     }
@@ -299,6 +308,7 @@
     bloque("rc-transfer","despues",sb,lleno&&pct&&base>0?tpl(T.transfer,{monto:money(base*(1-pct/100)),pct:pct}):"");
     var btn=$("[data-component='cart.checkout-button']",M); if(btn&&btn.value!==T.pagar) btn.value=T.pagar;
     envios(D);
+    filaEnvio(M);
     setTimeout(function(){ pintando=!1; },0);
     if(lleno&&!cargado){ cargado=!0; Promise.all(SUG.map(cargar)).then(function(){ pintar(!0); }); }
   }
@@ -339,6 +349,17 @@
   }
 
   /* ---------- v1.2 · SOLO ENVÍOS GRATIS ---------- */
+
+  /* v1.3.1 · el tema muestra "Gratis" suelto debajo del subtotal: que diga "Envío gratis" */
+  function filaEnvio(M){
+    var Z=$(".cart-totals-container",M)||M;
+    $$("*",Z).forEach(function(e){
+      if(e.children.length||e.closest("#rc-gratis,#rc-envio,.js-shipping-calculator-response")) return;
+      var t=(e.textContent||"").trim();
+      if(/^gratis$/i.test(t)){ var r=e.parentNode, rt=r?(r.textContent||""):""; if(!/env[ií]o/i.test(rt.replace(t,""))||!visible(r.querySelector(".cart-shipping-costs-label")||r)) { if(e.getAttribute("data-rc-envio")!==T.envioFila) e.setAttribute("data-rc-envio",T.envioFila); } }
+      else if(e.hasAttribute("data-rc-envio")) e.removeAttribute("data-rc-envio");
+    });
+  }
 
   /* ---------- v1.3 · ENVÍO GRATIS: ESCONDER OPCIONES ---------- */
   function cpCliente(M){
