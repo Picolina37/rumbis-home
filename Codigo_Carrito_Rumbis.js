@@ -12,7 +12,7 @@
    Se carga en TODA la tienda desde Google Tag Manager (como la home).
    Trabaja sobre el carrito del tema Amazonas (#modal-cart): no lo
    reemplaza, le suma diseño y bloques.
-
+ 
    Qué hace:
    1. Barra de envío gratis arriba ("Te faltan $X…" / "¡Tenés envío gratis!")
    2. Aviso del descuento por cantidad (5% llevando 2 · 10% llevando 3)
@@ -20,12 +20,12 @@
    4. "Completá el paseo": productos sugeridos con "+ Sumar" adentro del carrito
    5. Total, "Ahorrás $X" (solo si hay descuento real aplicado),
       botón de pago en bordó y precio con transferencia debajo
-
+ 
    ⚙️ Lo único que se edita es el bloque CONFIG de acá abajo.
    ================================================================ */
 !function(){
   if(window.RMB_CART) return; window.RMB_CART=!0;
-
+ 
   /* ======================= ⚙️ CONFIG ======================= */
   var CONFIG={
     /* true = al agregar un producto se abre el carrito de costado (en vez del aviso del tema) */
@@ -76,7 +76,7 @@
     }
   };
   /* ===================== FIN CONFIG ======================== */
-
+ 
   var T=CONFIG.textos;
   var CSS=
    "@import url('https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,500..700;1,9..144,500&family=Manrope:wght@400;500;600;700;800&display=swap');"
@@ -156,10 +156,10 @@
   +"#rc-gratis .rc-ic{flex:0 0 auto;color:var(--c-verde);margin-top:1px}"
   +"#rc-gratis b{display:block;font-family:Fraunces,Georgia,serif;font-size:17px;font-weight:600;color:var(--c-verde)}"
   +"#rc-gratis span span{display:block;margin-top:3px;font-size:12.5px;color:var(--c-muted)}";
-
+ 
   var TRUCK='<svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="6" width="14" height="11" rx="1.5"/><path d="M15 9h4l3 3.5V17h-7z"/><circle cx="6" cy="19" r="2"/><circle cx="18" cy="19" r="2"/></svg>';
   var TAG='<svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.6 13.4 13.4 20.6a2 2 0 0 1-2.8 0L3 13V3h10l7.6 7.6a2 2 0 0 1 0 2.8z"/><circle cx="7.5" cy="7.5" r="1.5"/></svg>';
-
+ 
   function $(s,r){ return (r||document).querySelector(s); }
   function $$(s,r){ return [].slice.call((r||document).querySelectorAll(s)); }
   function esc(s){ return String(s==null?"":s).replace(/[&<>"']/g,function(c){return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c];}); }
@@ -167,7 +167,7 @@
   function tpl(s,o){ return String(s||"").replace(/\{(\w+)\}/g,function(m,k){ return o[k]!=null?o[k]:m; }); }
   /* "$52.700,00" -> 52700 */
   function num(t){ t=String(t||"").replace(/[^\d,.]/g,""); if(!t) return 0; t=t.replace(/\./g,"").replace(",","."); return parseFloat(t)||0; }
-
+ 
   function datos(){
     var M=$("#modal-cart"); if(!M) return null;
     var n=0; $$(".js-cart-quantity-input",M).forEach(function(i){ n+=parseInt(i.value,10)||0; });
@@ -177,7 +177,7 @@
     var envTxt=(($("#shipping-cost",M)||{}).textContent)||"", env=/\d/.test(envTxt)?num(envTxt):0;
     return {M:M,n:n,sub:sub,tot:tot,env:env};
   }
-
+ 
   /* ---------- 1. ENVÍO GRATIS ---------- */
   function envio(D){
     var E=CONFIG.envio, base=D.sub, h="", pct=0, ok=!1, nota="";
@@ -197,7 +197,7 @@
       +'<div class="rc-bar"><i style="width:'+pct.toFixed(1)+'%"></i></div>'
       +(nota?'<p class="rc-en">'+nota+'</p>':"")+'<!--'+(ok?"ok":"no")+'-->';
   }
-
+ 
   /* ---------- 2. DESCUENTO POR CANTIDAD ---------- */
   function promo(n){
     var ES=CONFIG.escalones.slice().sort(function(a,b){return a.desde-b.desde;}), act=null, sig=null;
@@ -206,7 +206,7 @@
     if(sig){ var f=sig.desde-n; return {ok:!1,h:tpl(T.promoFalta,{n:f,s:f>1?"s":"",off:sig.off})+(act?" · hoy: "+act.off+"% OFF":"")}; }
     return null;
   }
-
+ 
   /* ---------- 4. SUGERIDOS ---------- */
   var SUG=CONFIG.sugeridos.items.map(function(c){ return {c:c,url:c.url||"",ok:!1,pid:"",grupos:[],precio:0,img:"",busy:!1}; });
   var cargado=!1;
@@ -274,7 +274,7 @@
     var fd=new FormData(f);
     fetch(x.act,{method:"POST",body:fd,credentials:"same-origin"}).then(function(){ try{ sessionStorage.setItem("rc_abrir","1"); }catch(e){} location.reload(); });
   }
-
+ 
   /* ---------- PINTAR ---------- */
   var pintando=!1;
   function pintar(forzar){
@@ -312,7 +312,7 @@
     setTimeout(function(){ pintando=!1; },0);
     if(lleno&&!cargado){ cargado=!0; Promise.all(SUG.map(cargar)).then(function(){ pintar(!0); }); }
   }
-
+ 
   /* ---------- v1.2 · ABRIR EL CARRITO AL AGREGAR ----------
      Clic NATIVO (el tema no escucha clics de jQuery). Primero usa el botón
      "Ver carrito" del propio aviso del tema; si no hay aviso, el ícono del
@@ -347,9 +347,9 @@
       setTimeout(function(){ if(!abierto()) abrirDrawer(); cerrarAvisos(); },1300);
     });
   }
-
+ 
   /* ---------- v1.2 · SOLO ENVÍOS GRATIS ---------- */
-
+ 
   /* v1.3.1 · el tema muestra "Gratis" suelto debajo del subtotal: que diga "Envío gratis" */
   function filaEnvio(M){
     var Z=$(".cart-totals-container",M)||M;
@@ -360,7 +360,7 @@
       else if(e.hasAttribute("data-rc-envio")) e.removeAttribute("data-rc-envio");
     });
   }
-
+ 
   /* ---------- v1.3 · ENVÍO GRATIS: ESCONDER OPCIONES ---------- */
   function cpCliente(M){
     var z=$(".js-shipping-calculator-current-zip",M), v=z?(z.textContent||"").trim():"";
@@ -386,7 +386,7 @@
     if(box.innerHTML!==h) box.innerHTML=h;
     if(box.nextSibling!==R) R.parentNode.insertBefore(box,R);
   }
-
+ 
   function iniciar(){
     var M=$("#modal-cart"); if(!M) return !1;
     if(!document.getElementById("rc-css")){ var s=document.createElement("style"); s.id="rc-css"; s.textContent=CSS; document.head.appendChild(s); }
@@ -409,3 +409,4 @@
     var k=0, iv=setInterval(function(){ if(iniciar()||++k>60) clearInterval(iv); },250);
   }
 }();
+ 
