@@ -1,5 +1,7 @@
 /* ================================================================
-   RUMBIS · CARRITO DE COSTADO CON DISEÑO PROPIO · v1.3.2 (06/11/2026)
+   RUMBIS · CARRITO DE COSTADO CON DISEÑO PROPIO · v1.4 (11/11/2026)
+   v1.4: línea "Pago 100% seguro" con candado debajo del botón de compra de
+         TODAS las fichas de producto y debajo de "Iniciar compra" (CONFIG.pagoSeguro).
    v1.3.2: sin aviso de descuento por cantidad (escalones vacío).
    v1.3.1: donde el tema muestra "Gratis" suelto bajo el subtotal, dice "Envío gratis".
            Si el cliente ya puso su código postal, la barra habla solo de su zona.
@@ -40,6 +42,10 @@
     envio:{ modo:"doble", amba:120000, resto:180000, unico:120000 },
     /* DESCUENTO POR CANTIDAD (tiene que coincidir con la promo de Tiendanube) */
     escalones:[],   /* v1.3.2 (06/11/2026): sin descuento por cantidad (se reemplazó por kits). Para volver: [ {desde:2, off:5}, {desde:3, off:10} ] */
+    /* PAGO SEGURO: línea con candado debajo del botón de compra.
+       Sale en todas las fichas de producto (con o sin landing) y en el carrito.
+       activo:false = no se muestra en ningún lado. */
+    pagoSeguro:{ activo:true, texto:"Pago 100% seguro", detalle:"tus datos viajan protegidos", enCarrito:true },
     /* TRANSFERENCIA */
     transferencia:10,
     /* "COMPLETÁ EL PASEO": productos sugeridos.
@@ -157,6 +163,11 @@
   +"#rc-gratis b{display:block;font-family:Fraunces,Georgia,serif;font-size:17px;font-weight:600;color:var(--c-verde)}"
   +"#rc-gratis span span{display:block;margin-top:3px;font-size:12.5px;color:var(--c-muted)}";
  
+  var LOCK='<svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="4.5" y="10.5" width="15" height="10.5" rx="2.2"/><path d="M8 10.5V7.5a4 4 0 0 1 8 0v3"/><circle cx="12" cy="15.6" r="1.3" fill="currentColor" stroke="none"/></svg>';
+  function seguroHtml(){
+    var P=CONFIG.pagoSeguro; if(!P||!P.activo||!P.texto) return "";
+    return '<span class="rs-ic">'+LOCK+'</span><span><b>'+P.texto+'</b>'+(P.detalle?' · '+P.detalle:'')+'</span>';
+  }
   var TRUCK='<svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="6" width="14" height="11" rx="1.5"/><path d="M15 9h4l3 3.5V17h-7z"/><circle cx="6" cy="19" r="2"/><circle cx="18" cy="19" r="2"/></svg>';
   var TAG='<svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.6 13.4 13.4 20.6a2 2 0 0 1-2.8 0L3 13V3h10l7.6 7.6a2 2 0 0 1 0 2.8z"/><circle cx="7.5" cy="7.5" r="1.5"/></svg>';
  
@@ -306,6 +317,7 @@
     bloque("rc-ahorro","despues",tc&&$(".cart-total",tc),ah);
     var sb=$(".js-ajax-cart-submit",M), pct=CONFIG.transferencia;
     bloque("rc-transfer","despues",sb,lleno&&pct&&base>0?tpl(T.transfer,{monto:money(base*(1-pct/100)),pct:pct}):"");
+    bloque("rc-seguro","despues",$("#rc-transfer",M)||sb,lleno&&CONFIG.pagoSeguro&&CONFIG.pagoSeguro.enCarrito?seguroHtml():"");
     var btn=$("[data-component='cart.checkout-button']",M); if(btn&&btn.value!==T.pagar) btn.value=T.pagar;
     envios(D);
     filaEnvio(M);
@@ -405,6 +417,27 @@
     try{ if(sessionStorage.getItem("rc_abrir")){ sessionStorage.removeItem("rc_abrir"); var c=$(".js-toggle-cart"); if(c) setTimeout(function(){ c.click(); },400); } }catch(e){}
     return !0;
   }
+  /* ---------- v1.4 · PAGO SEGURO DEBAJO DEL BOTÓN DE COMPRA (fichas de producto) ---------- */
+  var SEG_CSS=".rmb-seguro,#rc-seguro{display:flex;align-items:center;justify-content:center;gap:7px;margin:10px 0 4px;font-family:Manrope,system-ui,sans-serif;font-size:12.5px;line-height:1.35;color:#6F6A68;text-align:center}"
+   +".rmb-seguro b,#rc-seguro b{color:#373435;font-weight:800}"
+   +".rmb-seguro .rs-ic,#rc-seguro .rs-ic{flex:0 0 auto;display:inline-flex;color:#1B5F54}"
+   +"#modal-cart #rc-seguro{margin:-6px 0 14px}";
+  function seguroFicha(){
+    var h=seguroHtml(), e=document.getElementById("rmb-seguro");
+    if(!h){ if(e) e.remove(); return; }
+    var b=$("[data-store='product-buy-button']"); if(!b||!b.parentNode) return;
+    /* debajo de la fila cantidad + botón de las landings, o del botón del tema */
+    var ref=document.getElementById("rmb-buyrow");
+    if(!ref){ ref=b; var ph=b.parentNode.querySelector(".js-addtocart-placeholder"); if(ph&&ph.parentNode===b.parentNode&&(b.compareDocumentPosition(ph)&4)) ref=ph; }
+    if(!e){ e=document.createElement("div"); e.id="rmb-seguro"; e.className="rmb-seguro"; e.innerHTML=h; }
+    if(ref.nextSibling!==e) ref.parentNode.insertBefore(e,ref.nextSibling);
+  }
+  if(!document.getElementById("rs-css")){ var rs=document.createElement("style"); rs.id="rs-css"; rs.textContent=SEG_CSS; (document.head||document.documentElement).appendChild(rs); }
+  seguroFicha();
+  /* las landings arman la fila del botón un rato después: la acompañamos unos segundos */
+  var ks=0, ivs=setInterval(function(){ seguroFicha(); if(++ks>40) clearInterval(ivs); },250);
+  if(document.readyState==="loading") document.addEventListener("DOMContentLoaded",seguroFicha);
+ 
   if(!iniciar()){
     var k=0, iv=setInterval(function(){ if(iniciar()||++k>60) clearInterval(iv); },250);
   }
